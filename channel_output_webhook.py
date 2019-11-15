@@ -25,7 +25,7 @@ class WebhookOutputChannel(OutputChannel):
                 payload = input_channel.format_slack_canaryalert(
                                             canarydrop=canarydrop,
                                             **kwargs)
-            else if (pd in canarydrop['alert_webhook_url']):
+            elif (pd in canarydrop['alert_webhook_url']):
                 payload = input_channel.format_pd_canaryalert(
                                             canarydrop=canarydrop,
                                             **kwargs)

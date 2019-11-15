@@ -18,10 +18,15 @@ class WebhookOutputChannel(OutputChannel):
     def do_send_alert(self, input_channel=None, canarydrop=None, **kwargs):
 
         slack = "https://hooks.slack.com"
+        pd    = "https://events.pagerduty.com/v2/enqueue"
 
         try:
             if (slack in canarydrop['alert_webhook_url']):
                 payload = input_channel.format_slack_canaryalert(
+                                            canarydrop=canarydrop,
+                                            **kwargs)
+            else if (pd in canarydrop['alert_webhook_url']):
+                payload = input_channel.format_pd_canaryalert(
                                             canarydrop=canarydrop,
                                             **kwargs)
             else:

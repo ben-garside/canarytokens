@@ -77,6 +77,29 @@ class InputChannel(Channel):
         payload['attachments'] = [attachment]
         return payload
 
+    def format_pd_canaryalert(self,canarydrop=None,
+                                   host=settings.PUBLIC_DOMAIN, **kwargs):
+        payload = {}
+        if not host or host == '':
+            host=settings.PUBLIC_IP
+            pdkey=settings.PD_KEY
+
+        payload['event_action'] = 'trigger'
+        payload['routing_key'] = pdkey
+        payload['payload']['severity'] = 'warning' 
+        payload['payload']['source'] = 'CANARYTOKEN' 
+        payload['payload']['summary'] = canarydrop.memo
+        payload['payload']['custom_details']['channel'] = self.name
+        payload['payload']['custom_details']['time'] = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S (UTC)")
+        payload['payload']['custom_details']['memo'] = canarydrop.memo
+        payload['payload']['custom_details']['manage_url'] = 'http://{host}/manage?token={token}&auth={auth}'\
+                                                            .format(host=host,
+                                                                    token=canarydrop['canarytoken'],
+                                                                    auth=canarydrop['auth'])
+        payload['payload']['custom_details']['additional_data'] = kwargs
+
+        return payload
+
     def format_canaryalert(self, canarydrop=None, protocol="HTTP",
                            host=settings.PUBLIC_DOMAIN, params=None, **kwargs):
         msg = {}

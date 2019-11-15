@@ -490,10 +490,11 @@ def is_webhook_valid(url):
 
     slack = "https://hooks.slack.com"
     pd    = "https://events.pagerduty.com/v2/enqueue"
+
     if (slack in url):
         payload = {'text': 'Validating new canarytokens webhook'}
     elif (pd in url):
-        payload = {'text': 'Validating new canarytokens webhook'}
+        return True
     else:
         payload = {"manage_url": "http://example.com/test/url/for/webhook",
                    "memo": "Congrats! The newly saved webhook works",
